@@ -1,12 +1,12 @@
 # Project Name
-TARGET ?= protople
+TARGET ?= protopletest
 
 DEBUG = 1
 OPT = -O0
 #OPT = -O3
 
 # Sources
-CPP_SOURCES = protople.cpp
+CPP_SOURCES = protopletest.cpp
 C_INCLUDES = -IDaisySP/Source -IlibDaisy/src
 
 ifeq ($(DEBUG), 1)

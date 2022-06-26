@@ -40,10 +40,8 @@
 #define CV4_PIN 18
 #define CV5_PIN 19
 
-#define DAC_OUT1_PIN 22 // Also CV6
-#define DAC_OUT2_PIN 23 // Also CV7
-
-#define MAX_RESOLUTION 65400.f
+#define DAC_OUT1_PIN 22
+#define DAC_OUT2_PIN 23
 
 namespace protople
 {
@@ -60,69 +58,78 @@ namespace protople
     enum Control
     {
         TRIM_1, // Mux 1, pin 0 - Simple pin 1
-        TRIM_2, // Mux 1, pin 4 - Simple pin 12
-        TRIM_3, // Mux 2, pin 2 - Simple pin 22
-        TRIM_4, // Mux 2, pin 6 - Simple pin 32
+        TRIM_2, // Mux 2, pin 4 - Simple pin 12
+        TRIM_3, // Mux 2, pin 0 - Simple pin 22
+        TRIM_4, // Mux 1, pin 4 - Simple pin 32
         TRIM_5, // Mux 3, pin 2 - Simple pin 42
         TRIM_6, // Mux 4, pin 0 - Simple pin 52
         TRIM_7, // Mux 4, pin 4 - Simple pin 62
         TRIM_8, // Mux 5, pin 0 - Simple pin 72
-        KNOB_1, // Mux 1, pin 2 - Simple pin 8
+
+        KNOB_1, // Mux 2, pin 2 - Simple pin 8
         KNOB_2, // Mux 1, pin 6 - Simple pin 18
-        KNOB_3, // Mux 2, pin 4 - Simple pin 28
-        KNOB_4, // Mux 3, pin 0 - Simple pin 38
+        KNOB_3, // Mux 1, pin 2 - Simple pin 28
+        KNOB_4, // Mux 2, pin 6 - Simple pin 38
         KNOB_5, // Mux 3, pin 4 - Simple pin 48
         KNOB_6, // Mux 4, pin 2 - Simple pin 58
         KNOB_7, // Mux 4, pin 6 - Simple pin 68
         KNOB_8, // Mux 5, pin 2 - Simple pin 78
-        KNOB_9, // Mux 1, pin 1 - Simple pin 5
+
+        KNOB_9, // Mux 2, pin 1 - Simple pin 5
         KNOB_10, // Mux 1, pin 5 - Simple pin 15
-        KNOB_11, // Mux 2, pin 3 - Simple pin 25
-        KNOB_12, // Mux 2, pin 7 - Simple pin 35
+        KNOB_11, // Mux 1, pin 1 - Simple pin 25
+        KNOB_12, // Mux 2, pin 5 - Simple pin 35
         KNOB_13, // Mux 3, pin 3 - Simple pin 45
         KNOB_14, // Mux 4, pin 1 - Simple pin 55
         KNOB_15, // Mux 4, pin 5 - Simple pin 65
         KNOB_16, // Mux 5, pin 1 - Simple pin 75
-        TOGGLE_1, // Mux 1, pin 3 - Simple pin 10
-        TOGGLE_2, // Mux 2, pin 5 - Simple pin 30
+
+        TOGGLE_1, // Mux 2 pin 3 - Simple pin 10
+        TOGGLE_2, // Mux 1, pin 3 - Simple pin 30
         TOGGLE_3, // Mux 3, pin 5 - Simple pin 50
         TOGGLE_4, // Mux 4, pin 7 - Simple pin 70
+
         SELECTOR1_A, // Mux 2, pin 0 - Simple pin 21
         SELECTOR1_B, // Mux 2, pin 1 - Simple pin 21
         SELECTOR2_A, // Mux 3, pin 6 - Simple pin 51
         SELECTOR2_B, // Mux 3, pin 7 - Simple pin 51
+
         BUTTON_1, // Mux 1, pin 7 - Simple pin 20
-        BUTTON_2, // Mux 3, pin 1 - Simple pin 40
+        BUTTON_2, // Mux 2, pin 7 - Simple pin 40
         BUTTON_3, // Mux 4, pin 3 - Simple pin 60
         BUTTON_4, // Mux 5, pin 3 - Simple pin 80
         CONTROL_LAST,
     };
 
-    enum Cv
+    enum CvIn
     {
-        CV1,
-        CV2,
-        CV3,
-        CV4,
-        CV5,
-        CV6, // Also DAC out 1
-        CV7, // Also DAC out 2
-        CV_LAST,
+        CV_IN1, // Simple pin 26 -> Daisy pin 15 (15)
+        CV_IN2, // Simple pin 31 -> Daisy pin 16 (16)
+        CV_IN3, // Simple pin 36 -> Daisy pin 17 (17)
+        CV_IN4, // Simple pin 41 -> Daisy pin 18 (18)
+        CV_IN5, // Simple pin 46 -> Daisy pin 19 (19)
+        CV_IN_LAST,
+    };
+
+    enum CvOut
+    {
+        CV_OUT1, // Simple pin 56 -> Daisy pin 22 (30)
+        CV_OUT2, // Simple pin 61 -> Daisy pin 23 (31)
+        CV_OUT_LAST,
     };
 
     enum Gate
     {
-        GATE_IN1,
-        GATE_IN2, // Also MIDI IN, see comment above
-        GATE_OUT1,
-        GATE_OUT2,
+        GATE_IN1, // Simple pin 66 -> Daisy pin 26 (34)
+        GATE_IN2, // Simple pin 71 -> Daisy pin 27 (35)
+        GATE_OUT, // Simple pin 76 -> Daisy pin 29 (37)
         GATE_LAST,
     };
 
     AnalogControl controls[CONTROL_LAST];
-    //Parameter knobs[Knob::KNOB_LAST];
+    AnalogControl cvIns[CV_IN_LAST];
     GateIn gateIns[2];
-    dsy_gpio gateOuts[2];
+    dsy_gpio gateOut;
 
     void InitControls()
     {
@@ -158,50 +165,56 @@ namespace protople
             MUX5_C_PIN,
         };
 
-        short cvPins[CV_LAST] = {
+        short cvPins[CV_IN_LAST] = {
             CV1_PIN,
             CV2_PIN,
             CV3_PIN,
             CV4_PIN,
             CV5_PIN,
-            DAC_OUT1_PIN,
-            DAC_OUT2_PIN,
         };
 
-        AdcChannelConfig adcChannels[N_MUXES + CV_LAST];
+        AdcChannelConfig adcChannels[N_MUXES + CV_IN_LAST];
         for (short i = 0; i < N_MUXES; i++)
         {
             adcChannels[i].InitMux(seed.GetPin(muxAdcPins[i]), 8, seed.GetPin(muxAPins[i]), seed.GetPin(muxBPins[i]), seed.GetPin(muxCPins[i]));
         }
-        for (short i = N_MUXES; i < N_MUXES + CV_LAST; i++)
+        for (short i = N_MUXES; i < N_MUXES + CV_IN_LAST; i++)
         {
             adcChannels[i].InitSingle(seed.GetPin(cvPins[i - N_MUXES]));
         }
-        seed.adc.Init(adcChannels, N_MUXES + CV_LAST);
+        seed.adc.Init(adcChannels, N_MUXES + CV_IN_LAST);
 
         // Mux'd controls.
         controls[TRIM_1].Init(seed.adc.GetMuxPtr(0, 0), seed.AudioCallbackRate(), true);
-        controls[TRIM_2].Init(seed.adc.GetMuxPtr(0, 4), seed.AudioCallbackRate(), true);
+        controls[TRIM_2].Init(seed.adc.GetMuxPtr(1, 4), seed.AudioCallbackRate(), true);
+        controls[TRIM_3].Init(seed.adc.GetMuxPtr(1, 0), seed.AudioCallbackRate(), true);
+        controls[TRIM_4].Init(seed.adc.GetMuxPtr(0, 4), seed.AudioCallbackRate(), true);
 
-        controls[KNOB_1].Init(seed.adc.GetMuxPtr(0, 2), seed.AudioCallbackRate(), true);
+        controls[KNOB_1].Init(seed.adc.GetMuxPtr(1, 2), seed.AudioCallbackRate(), true);
         controls[KNOB_2].Init(seed.adc.GetMuxPtr(0, 6), seed.AudioCallbackRate(), true);
+        controls[KNOB_3].Init(seed.adc.GetMuxPtr(0, 2), seed.AudioCallbackRate(), true);
+        controls[KNOB_4].Init(seed.adc.GetMuxPtr(1, 6), seed.AudioCallbackRate(), true);
 
-        controls[KNOB_9].Init(seed.adc.GetMuxPtr(0, 1), seed.AudioCallbackRate(), true);
+        controls[KNOB_9].Init(seed.adc.GetMuxPtr(1, 1), seed.AudioCallbackRate(), true);
         controls[KNOB_10].Init(seed.adc.GetMuxPtr(0, 5), seed.AudioCallbackRate(), true);
+        controls[KNOB_11].Init(seed.adc.GetMuxPtr(0, 1), seed.AudioCallbackRate(), true);
+        controls[KNOB_12].Init(seed.adc.GetMuxPtr(1, 5), seed.AudioCallbackRate(), true);
 
-        controls[TOGGLE_1].Init(seed.adc.GetMuxPtr(0, 3), seed.AudioCallbackRate());
+        controls[TOGGLE_1].Init(seed.adc.GetMuxPtr(1, 3), seed.AudioCallbackRate());
+        controls[TOGGLE_2].Init(seed.adc.GetMuxPtr(0, 3), seed.AudioCallbackRate());
 
         controls[BUTTON_1].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
+        controls[BUTTON_2].Init(seed.adc.GetMuxPtr(1, 7), seed.AudioCallbackRate());
 
-        // Direct controls.
-        controls[CV1].Init(seed.adc.GetPtr(N_MUXES), seed.AudioCallbackRate());
-        controls[CV2].Init(seed.adc.GetPtr(N_MUXES + 1), seed.AudioCallbackRate());
-        controls[CV3].Init(seed.adc.GetPtr(N_MUXES + 2), seed.AudioCallbackRate());
-        controls[CV4].Init(seed.adc.GetPtr(N_MUXES + 3), seed.AudioCallbackRate());
-        controls[CV5].Init(seed.adc.GetPtr(N_MUXES + 4), seed.AudioCallbackRate());
+        // Non-mux'd controls.
+        cvIns[CV_IN1].Init(seed.adc.GetPtr(N_MUXES), seed.AudioCallbackRate(), true);
+        cvIns[CV_IN2].Init(seed.adc.GetPtr(N_MUXES + 1), seed.AudioCallbackRate());
+        cvIns[CV_IN3].Init(seed.adc.GetPtr(N_MUXES + 2), seed.AudioCallbackRate());
+        cvIns[CV_IN4].Init(seed.adc.GetPtr(N_MUXES + 3), seed.AudioCallbackRate());
+        cvIns[CV_IN5].Init(seed.adc.GetPtr(N_MUXES + 4), seed.AudioCallbackRate());
     }
 
-    void InitCvOutputs()
+    void InitCvOuts()
     {
         //    dsy_dac_init(&seed.dac_handle, DSY_DAC_CHN_BOTH);
         //    dsy_dac_write(DSY_DAC_CHN1, 0);
@@ -217,23 +230,18 @@ namespace protople
 
     void InitGates()
     {
-        // Gate outs.
-        gateOuts[0].pin  = seed.GetPin(GATE1_PIN);
-        gateOuts[0].mode = DSY_GPIO_MODE_OUTPUT_PP;
-        gateOuts[0].pull = DSY_GPIO_NOPULL;
-        dsy_gpio_init(&gateOuts[0]);
-
-        gateOuts[1].pin  = seed.GetPin(GATE2_PIN);
-        gateOuts[1].mode = DSY_GPIO_MODE_OUTPUT_PP;
-        gateOuts[1].pull = DSY_GPIO_NOPULL;
-        dsy_gpio_init(&gateOuts[1]);
-
-        // Gate Inputs
+        // Gate ins.
         dsy_gpio_pin pin;
-        pin = seed.GetPin(GATE3_PIN);
+        pin = seed.GetPin(GATE1_PIN);
         gateIns[GATE_IN1].Init(&pin);
-        pin = seed.GetPin(GATE4_PIN);
+        pin = seed.GetPin(GATE2_PIN);
         gateIns[GATE_IN2].Init(&pin);
+
+        // Gate out.
+        gateOut.pin  = seed.GetPin(GATE3_PIN);
+        gateOut.mode = DSY_GPIO_MODE_OUTPUT_PP;
+        gateOut.pull = DSY_GPIO_NOPULL;
+        dsy_gpio_init(&gateOut);
     }
 
     inline void InitHw()
@@ -243,17 +251,9 @@ namespace protople
         seed.SetAudioBlockSize(48);
 
         InitControls();
-        InitCvOutputs();
+        InitCvOuts();
         InitGates();
 
-/*
-        for (short i = 0; i < BUTTON_LAST; i++)
-        {
-            dsy_gpio_pin p = seed.GetPin(buttonPins[i]);
-            buttons[i].Init(p);
-        }
-
-*/
         srand(time(NULL));
     }
 

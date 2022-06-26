@@ -1,6 +1,6 @@
 #pragma once
 
-#include "protople.h"
+#include "protopletest.h"
 #include "Utility/dsp.h"
 #include <string>
 
@@ -19,24 +19,52 @@ namespace protople
         switch (idx)
         {
         case TRIM_1:
-            osc.SetAmp(value);
+            osc.SetFreq(fmap(value, 20.f, 220.f));
+            //osc.SetAmp(value);
             break;
         case TRIM_2:
             break;
+        case TRIM_3:
+            //osc.SetAmp(value);
+            break;
+        case TRIM_4:
+            break;
         case KNOB_1:
-            osc.SetFreq(fmap(value, 20.f, 220.f));
+            //osc.SetFreq(fmap(value, 20.f, 220.f));
             break;
         case KNOB_2:
+            break;
+        case KNOB_3:
+            //osc.SetFreq(fmap(value, 20.f, 220.f));
+            break;
+        case KNOB_4:
             break;
         case KNOB_9:
             break;
         case KNOB_10:
             break;
+        case KNOB_11:
+            break;
+        case KNOB_12:
+            break;
         case TOGGLE_1:
-            osc.SetAmp(value);
+            //osc.SetAmp(value);
             break;
         case BUTTON_1:
-            osc.SetAmp(value);
+            //osc.SetAmp(value);
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    inline void ProcessCv(short idx, float value)
+    {
+        switch (idx)
+        {
+        case CV_IN1:
+            //osc.SetFreq(100 + value);
             break;
 
         default:

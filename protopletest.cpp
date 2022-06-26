@@ -1,6 +1,6 @@
-#include "hw.h"
-#include "ui.h"
-#include "protople.h"
+#include "protople_hw.h"
+#include "protople_ui.h"
+#include "protopletest.h"
 #include <cstring>
 
 using namespace protople;
