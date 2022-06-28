@@ -49,7 +49,7 @@ namespace protople
     using namespace daisysp;
 
     // The minimum difference in parameter value to be registered.
-    constexpr float kMinValueDelta{0.001f};
+    constexpr float kMinValueDelta{0.002f};
 
     DaisySeed seed;
 
@@ -61,8 +61,8 @@ namespace protople
         TRIM_2, // Mux 2, pin 4 - Simple pin 12
         TRIM_3, // Mux 2, pin 0 - Simple pin 22
         TRIM_4, // Mux 1, pin 4 - Simple pin 32
-        TRIM_5, // Mux 3, pin 2 - Simple pin 42
-        TRIM_6, // Mux 4, pin 0 - Simple pin 52
+        TRIM_5, // Mux 3, pin 0 - Simple pin 42
+        TRIM_6, // Mux 3, pin 4 - Simple pin 52
         TRIM_7, // Mux 4, pin 4 - Simple pin 62
         TRIM_8, // Mux 5, pin 0 - Simple pin 72
 
@@ -70,8 +70,8 @@ namespace protople
         KNOB_2, // Mux 1, pin 6 - Simple pin 18
         KNOB_3, // Mux 1, pin 2 - Simple pin 28
         KNOB_4, // Mux 2, pin 6 - Simple pin 38
-        KNOB_5, // Mux 3, pin 4 - Simple pin 48
-        KNOB_6, // Mux 4, pin 2 - Simple pin 58
+        KNOB_5, // Mux 3, pin 2 - Simple pin 48
+        KNOB_6, // Mux 3, pin 6 - Simple pin 58
         KNOB_7, // Mux 4, pin 6 - Simple pin 68
         KNOB_8, // Mux 5, pin 2 - Simple pin 78
 
@@ -79,14 +79,14 @@ namespace protople
         KNOB_10, // Mux 1, pin 5 - Simple pin 15
         KNOB_11, // Mux 1, pin 1 - Simple pin 25
         KNOB_12, // Mux 2, pin 5 - Simple pin 35
-        KNOB_13, // Mux 3, pin 3 - Simple pin 45
-        KNOB_14, // Mux 4, pin 1 - Simple pin 55
+        KNOB_13, // Mux 3, pin 1 - Simple pin 45
+        KNOB_14, // Mux 3, pin 5 - Simple pin 55
         KNOB_15, // Mux 4, pin 5 - Simple pin 65
         KNOB_16, // Mux 5, pin 1 - Simple pin 75
 
         TOGGLE_1, // Mux 2 pin 3 - Simple pin 10
         TOGGLE_2, // Mux 1, pin 3 - Simple pin 30
-        TOGGLE_3, // Mux 3, pin 5 - Simple pin 50
+        TOGGLE_3, // Mux 3, pin 3 - Simple pin 50
         TOGGLE_4, // Mux 4, pin 7 - Simple pin 70
 
         SELECTOR1_A, // Mux 2, pin 0 - Simple pin 21
@@ -96,13 +96,12 @@ namespace protople
 
         BUTTON_1, // Mux 1, pin 7 - Simple pin 20
         BUTTON_2, // Mux 2, pin 7 - Simple pin 40
-        BUTTON_3, // Mux 4, pin 3 - Simple pin 60
+        BUTTON_3, // Mux 3, pin 7 - Simple pin 60
         BUTTON_4, // Mux 5, pin 3 - Simple pin 80
         CONTROL_LAST,
     };
 
-    enum CvIn
-    {
+    enum CvIn    {
         CV_IN1, // Simple pin 26 -> Daisy pin 15 (15)
         CV_IN2, // Simple pin 31 -> Daisy pin 16 (16)
         CV_IN3, // Simple pin 36 -> Daisy pin 17 (17)
@@ -189,22 +188,43 @@ namespace protople
         controls[TRIM_2].Init(seed.adc.GetMuxPtr(1, 4), seed.AudioCallbackRate(), true);
         controls[TRIM_3].Init(seed.adc.GetMuxPtr(1, 0), seed.AudioCallbackRate(), true);
         controls[TRIM_4].Init(seed.adc.GetMuxPtr(0, 4), seed.AudioCallbackRate(), true);
+        controls[TRIM_5].Init(seed.adc.GetMuxPtr(2, 0), seed.AudioCallbackRate(), true);
+        controls[TRIM_6].Init(seed.adc.GetMuxPtr(2, 4), seed.AudioCallbackRate(), true);
+        //controls[TRIM_7].Init(seed.adc.GetMuxPtr(1, 0), seed.AudioCallbackRate(), true);
+        //controls[TRIM_8].Init(seed.adc.GetMuxPtr(0, 4), seed.AudioCallbackRate(), true);
 
         controls[KNOB_1].Init(seed.adc.GetMuxPtr(1, 2), seed.AudioCallbackRate(), true);
         controls[KNOB_2].Init(seed.adc.GetMuxPtr(0, 6), seed.AudioCallbackRate(), true);
         controls[KNOB_3].Init(seed.adc.GetMuxPtr(0, 2), seed.AudioCallbackRate(), true);
         controls[KNOB_4].Init(seed.adc.GetMuxPtr(1, 6), seed.AudioCallbackRate(), true);
+        controls[KNOB_5].Init(seed.adc.GetMuxPtr(2, 2), seed.AudioCallbackRate(), true);
+        controls[KNOB_6].Init(seed.adc.GetMuxPtr(2, 6), seed.AudioCallbackRate(), true);
+        //controls[KNOB_7].Init(seed.adc.GetMuxPtr(0, 2), seed.AudioCallbackRate(), true);
+        //controls[KNOB_8].Init(seed.adc.GetMuxPtr(1, 6), seed.AudioCallbackRate(), true);
 
         controls[KNOB_9].Init(seed.adc.GetMuxPtr(1, 1), seed.AudioCallbackRate(), true);
         controls[KNOB_10].Init(seed.adc.GetMuxPtr(0, 5), seed.AudioCallbackRate(), true);
         controls[KNOB_11].Init(seed.adc.GetMuxPtr(0, 1), seed.AudioCallbackRate(), true);
         controls[KNOB_12].Init(seed.adc.GetMuxPtr(1, 5), seed.AudioCallbackRate(), true);
+        controls[KNOB_13].Init(seed.adc.GetMuxPtr(2, 1), seed.AudioCallbackRate(), true);
+        controls[KNOB_14].Init(seed.adc.GetMuxPtr(2, 5), seed.AudioCallbackRate(), true);
+        //controls[KNOB_15].Init(seed.adc.GetMuxPtr(0, 1), seed.AudioCallbackRate(), true);
+        //controls[KNOB_16].Init(seed.adc.GetMuxPtr(1, 5), seed.AudioCallbackRate(), true);
 
         controls[TOGGLE_1].Init(seed.adc.GetMuxPtr(1, 3), seed.AudioCallbackRate());
         controls[TOGGLE_2].Init(seed.adc.GetMuxPtr(0, 3), seed.AudioCallbackRate());
+        controls[TOGGLE_3].Init(seed.adc.GetMuxPtr(2, 3), seed.AudioCallbackRate());
+        //controls[TOGGLE_4].Init(seed.adc.GetMuxPtr(0, 3), seed.AudioCallbackRate());
+
+        //controls[SELECTOR1_A].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
+        //controls[SELECTOR1_B].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
+        //controls[SELECTOR2_A].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
+        //controls[SELECTOR2_B].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
 
         controls[BUTTON_1].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
         controls[BUTTON_2].Init(seed.adc.GetMuxPtr(1, 7), seed.AudioCallbackRate());
+        controls[BUTTON_3].Init(seed.adc.GetMuxPtr(2, 7), seed.AudioCallbackRate());
+        //controls[BUTTON_4].Init(seed.adc.GetMuxPtr(1, 7), seed.AudioCallbackRate());
 
         // Non-mux'd controls.
         cvIns[CV_IN1].Init(seed.adc.GetPtr(N_MUXES), seed.AudioCallbackRate(), true);
