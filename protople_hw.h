@@ -49,7 +49,7 @@ namespace protople
     using namespace daisysp;
 
     // The minimum difference in parameter value to be registered.
-    constexpr float kMinValueDelta{0.002f};
+    constexpr float kMinValueDelta{0.003f};
 
     DaisySeed seed;
 
@@ -190,8 +190,8 @@ namespace protople
         controls[TRIM_4].Init(seed.adc.GetMuxPtr(0, 4), seed.AudioCallbackRate(), true);
         controls[TRIM_5].Init(seed.adc.GetMuxPtr(2, 0), seed.AudioCallbackRate(), true);
         controls[TRIM_6].Init(seed.adc.GetMuxPtr(2, 4), seed.AudioCallbackRate(), true);
-        //controls[TRIM_7].Init(seed.adc.GetMuxPtr(1, 0), seed.AudioCallbackRate(), true);
-        //controls[TRIM_8].Init(seed.adc.GetMuxPtr(0, 4), seed.AudioCallbackRate(), true);
+        controls[TRIM_7].Init(seed.adc.GetMuxPtr(3, 7), seed.AudioCallbackRate(), true);
+        controls[TRIM_8].Init(seed.adc.GetMuxPtr(3, 3), seed.AudioCallbackRate(), true);
 
         controls[KNOB_1].Init(seed.adc.GetMuxPtr(1, 2), seed.AudioCallbackRate(), true);
         controls[KNOB_2].Init(seed.adc.GetMuxPtr(0, 6), seed.AudioCallbackRate(), true);
@@ -199,8 +199,8 @@ namespace protople
         controls[KNOB_4].Init(seed.adc.GetMuxPtr(1, 6), seed.AudioCallbackRate(), true);
         controls[KNOB_5].Init(seed.adc.GetMuxPtr(2, 2), seed.AudioCallbackRate(), true);
         controls[KNOB_6].Init(seed.adc.GetMuxPtr(2, 6), seed.AudioCallbackRate(), true);
-        //controls[KNOB_7].Init(seed.adc.GetMuxPtr(0, 2), seed.AudioCallbackRate(), true);
-        //controls[KNOB_8].Init(seed.adc.GetMuxPtr(1, 6), seed.AudioCallbackRate(), true);
+        controls[KNOB_7].Init(seed.adc.GetMuxPtr(3, 5), seed.AudioCallbackRate(), true);
+        controls[KNOB_8].Init(seed.adc.GetMuxPtr(3, 1), seed.AudioCallbackRate(), true);
 
         controls[KNOB_9].Init(seed.adc.GetMuxPtr(1, 1), seed.AudioCallbackRate(), true);
         controls[KNOB_10].Init(seed.adc.GetMuxPtr(0, 5), seed.AudioCallbackRate(), true);
@@ -208,23 +208,25 @@ namespace protople
         controls[KNOB_12].Init(seed.adc.GetMuxPtr(1, 5), seed.AudioCallbackRate(), true);
         controls[KNOB_13].Init(seed.adc.GetMuxPtr(2, 1), seed.AudioCallbackRate(), true);
         controls[KNOB_14].Init(seed.adc.GetMuxPtr(2, 5), seed.AudioCallbackRate(), true);
-        //controls[KNOB_15].Init(seed.adc.GetMuxPtr(0, 1), seed.AudioCallbackRate(), true);
-        //controls[KNOB_16].Init(seed.adc.GetMuxPtr(1, 5), seed.AudioCallbackRate(), true);
+        controls[KNOB_15].Init(seed.adc.GetMuxPtr(3, 6), seed.AudioCallbackRate(), true);
+        controls[KNOB_16].Init(seed.adc.GetMuxPtr(3, 2), seed.AudioCallbackRate(), true);
 
         controls[TOGGLE_1].Init(seed.adc.GetMuxPtr(1, 3), seed.AudioCallbackRate());
         controls[TOGGLE_2].Init(seed.adc.GetMuxPtr(0, 3), seed.AudioCallbackRate());
         controls[TOGGLE_3].Init(seed.adc.GetMuxPtr(2, 3), seed.AudioCallbackRate());
-        //controls[TOGGLE_4].Init(seed.adc.GetMuxPtr(0, 3), seed.AudioCallbackRate());
+        controls[TOGGLE_4].Init(seed.adc.GetMuxPtr(3, 0), seed.AudioCallbackRate());
 
-        //controls[SELECTOR1_A].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
-        //controls[SELECTOR1_B].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
-        //controls[SELECTOR2_A].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
-        //controls[SELECTOR2_B].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
+        /*
+        controls[SELECTOR1_A].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
+        controls[SELECTOR1_B].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
+        controls[SELECTOR2_A].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
+        controls[SELECTOR2_B].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
+        */
 
         controls[BUTTON_1].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
         controls[BUTTON_2].Init(seed.adc.GetMuxPtr(1, 7), seed.AudioCallbackRate());
         controls[BUTTON_3].Init(seed.adc.GetMuxPtr(2, 7), seed.AudioCallbackRate());
-        //controls[BUTTON_4].Init(seed.adc.GetMuxPtr(1, 7), seed.AudioCallbackRate());
+        controls[BUTTON_4].Init(seed.adc.GetMuxPtr(3, 0), seed.AudioCallbackRate());
 
         // Non-mux'd controls.
         cvIns[CV_IN1].Init(seed.adc.GetPtr(N_MUXES), seed.AudioCallbackRate(), true);
@@ -318,16 +320,6 @@ namespace protople
     float GetControlValue(short idx)
     {
         float value = controls[idx].Process();
-
-        // Handle range limits.
-        if (value < kMinValueDelta)
-        {
-            value = 0.f;
-        }
-        else if (value > 1 - kMinValueDelta)
-        {
-            value = 1.f;
-        }
 
         // Toggles only have two values.
         if (idx >= TOGGLE_1 && idx <= TOGGLE_4)
