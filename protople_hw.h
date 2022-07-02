@@ -64,7 +64,7 @@ namespace protople
         TRIM_5, // Mux 3, pin 0 - Simple pin 42
         TRIM_6, // Mux 3, pin 4 - Simple pin 52
         TRIM_7, // Mux 4, pin 4 - Simple pin 62
-        TRIM_8, // Mux 5, pin 0 - Simple pin 72
+        TRIM_8, // Mux 4, pin 0 - Simple pin 72
 
         KNOB_1, // Mux 2, pin 2 - Simple pin 8
         KNOB_2, // Mux 1, pin 6 - Simple pin 18
@@ -73,7 +73,7 @@ namespace protople
         KNOB_5, // Mux 3, pin 2 - Simple pin 48
         KNOB_6, // Mux 3, pin 6 - Simple pin 58
         KNOB_7, // Mux 4, pin 6 - Simple pin 68
-        KNOB_8, // Mux 5, pin 2 - Simple pin 78
+        KNOB_8, // Mux 4, pin 2 - Simple pin 78
 
         KNOB_9, // Mux 2, pin 1 - Simple pin 5
         KNOB_10, // Mux 1, pin 5 - Simple pin 15
@@ -82,46 +82,49 @@ namespace protople
         KNOB_13, // Mux 3, pin 1 - Simple pin 45
         KNOB_14, // Mux 3, pin 5 - Simple pin 55
         KNOB_15, // Mux 4, pin 5 - Simple pin 65
-        KNOB_16, // Mux 5, pin 1 - Simple pin 75
+        KNOB_16, // Mux 4, pin 1 - Simple pin 75
 
         TOGGLE_1, // Mux 2 pin 3 - Simple pin 10
         TOGGLE_2, // Mux 1, pin 3 - Simple pin 30
         TOGGLE_3, // Mux 3, pin 3 - Simple pin 50
         TOGGLE_4, // Mux 4, pin 7 - Simple pin 70
 
-        SELECTOR1_A, // Mux 2, pin 0 - Simple pin 21
-        SELECTOR1_B, // Mux 2, pin 1 - Simple pin 21
-        SELECTOR2_A, // Mux 3, pin 6 - Simple pin 51
-        SELECTOR2_B, // Mux 3, pin 7 - Simple pin 51
+        SELECTOR_1, // Maps SELECTOR_1A and SELECTOR_1B
+        SELECTOR_1A, // DNU - Mux 5, pin 0 - Simple pin 21
+        SELECTOR_1B, // DNU - Mux 5, pin 1 - Simple pin 21
+        SELECTOR_2, // Maps SELECTOR_2A and SELECTOR_2B
+        SELECTOR_2A, // DNU - Mux 5, pin 6 - Simple pin 51
+        SELECTOR_2B, // DNU - Mux 5, pin 7 - Simple pin 51
 
         BUTTON_1, // Mux 1, pin 7 - Simple pin 20
         BUTTON_2, // Mux 2, pin 7 - Simple pin 40
         BUTTON_3, // Mux 3, pin 7 - Simple pin 60
-        BUTTON_4, // Mux 5, pin 3 - Simple pin 80
+        BUTTON_4, // Mux 4, pin 3 - Simple pin 80
         CONTROL_LAST,
     };
 
-    enum CvIn    {
-        CV_IN1, // Simple pin 26 -> Daisy pin 15 (15)
-        CV_IN2, // Simple pin 31 -> Daisy pin 16 (16)
-        CV_IN3, // Simple pin 36 -> Daisy pin 17 (17)
-        CV_IN4, // Simple pin 41 -> Daisy pin 18 (18)
-        CV_IN5, // Simple pin 46 -> Daisy pin 19 (19)
+    enum CvIn
+    {
+        CV_IN_1, // Simple pin 26 -> Daisy pin 15 (15)
+        CV_IN_2, // Simple pin 31 -> Daisy pin 16 (16)
+        CV_IN_3, // Simple pin 36 -> Daisy pin 17 (17)
+        CV_IN_4, // Simple pin 41 -> Daisy pin 18 (18)
+        CV_IN_5, // Simple pin 46 -> Daisy pin 19 (19)
         CV_IN_LAST,
     };
 
     enum CvOut
     {
-        CV_OUT1, // Simple pin 56 -> Daisy pin 22 (30)
-        CV_OUT2, // Simple pin 61 -> Daisy pin 23 (31)
+        CV_OUT_1, // Simple pin 56 -> Daisy pin 22 (30)
+        CV_OUT_2, // Simple pin 61 -> Daisy pin 23 (31)
         CV_OUT_LAST,
     };
 
     enum Gate
     {
-        GATE_IN1, // Simple pin 66 -> Daisy pin 26 (34)
-        GATE_IN2, // Simple pin 71 -> Daisy pin 27 (35)
-        GATE_OUT, // Simple pin 76 -> Daisy pin 29 (37)
+        GATE_IN_1, // Simple pin 66 -> Daisy pin 26 (34)
+        GATE_IN_2, // Simple pin 71 -> Daisy pin 27 (35)
+        GATE_OUT_, // Simple pin 76 -> Daisy pin 29 (37)
         GATE_LAST,
     };
 
@@ -216,12 +219,10 @@ namespace protople
         controls[TOGGLE_3].Init(seed.adc.GetMuxPtr(2, 3), seed.AudioCallbackRate());
         controls[TOGGLE_4].Init(seed.adc.GetMuxPtr(3, 0), seed.AudioCallbackRate());
 
-        /*
-        controls[SELECTOR1_A].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
-        controls[SELECTOR1_B].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
-        controls[SELECTOR2_A].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
-        controls[SELECTOR2_B].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
-        */
+        controls[SELECTOR_1A].Init(seed.adc.GetMuxPtr(4, 2), seed.AudioCallbackRate());
+        controls[SELECTOR_1B].Init(seed.adc.GetMuxPtr(4, 3), seed.AudioCallbackRate());
+        controls[SELECTOR_2A].Init(seed.adc.GetMuxPtr(4, 0), seed.AudioCallbackRate());
+        controls[SELECTOR_2B].Init(seed.adc.GetMuxPtr(4, 1), seed.AudioCallbackRate());
 
         controls[BUTTON_1].Init(seed.adc.GetMuxPtr(0, 7), seed.AudioCallbackRate());
         controls[BUTTON_2].Init(seed.adc.GetMuxPtr(1, 7), seed.AudioCallbackRate());
@@ -229,11 +230,11 @@ namespace protople
         controls[BUTTON_4].Init(seed.adc.GetMuxPtr(3, 0), seed.AudioCallbackRate());
 
         // Non-mux'd controls.
-        cvIns[CV_IN1].Init(seed.adc.GetPtr(N_MUXES), seed.AudioCallbackRate(), true);
-        cvIns[CV_IN2].Init(seed.adc.GetPtr(N_MUXES + 1), seed.AudioCallbackRate());
-        cvIns[CV_IN3].Init(seed.adc.GetPtr(N_MUXES + 2), seed.AudioCallbackRate());
-        cvIns[CV_IN4].Init(seed.adc.GetPtr(N_MUXES + 3), seed.AudioCallbackRate());
-        cvIns[CV_IN5].Init(seed.adc.GetPtr(N_MUXES + 4), seed.AudioCallbackRate());
+        cvIns[CV_IN_1].Init(seed.adc.GetPtr(N_MUXES), seed.AudioCallbackRate(), true);
+        cvIns[CV_IN_2].Init(seed.adc.GetPtr(N_MUXES + 1), seed.AudioCallbackRate());
+        cvIns[CV_IN_3].Init(seed.adc.GetPtr(N_MUXES + 2), seed.AudioCallbackRate());
+        cvIns[CV_IN_4].Init(seed.adc.GetPtr(N_MUXES + 3), seed.AudioCallbackRate());
+        cvIns[CV_IN_5].Init(seed.adc.GetPtr(N_MUXES + 4), seed.AudioCallbackRate());
     }
 
     void InitCvOuts()
@@ -255,9 +256,9 @@ namespace protople
         // Gate ins.
         dsy_gpio_pin pin;
         pin = seed.GetPin(GATE1_PIN);
-        gateIns[GATE_IN1].Init(&pin);
+        gateIns[GATE_IN_1].Init(&pin);
         pin = seed.GetPin(GATE2_PIN);
-        gateIns[GATE_IN2].Init(&pin);
+        gateIns[GATE_IN_2].Init(&pin);
 
         // Gate out.
         gateOut.pin  = seed.GetPin(GATE3_PIN);
@@ -319,17 +320,42 @@ namespace protople
 
     float GetControlValue(short idx)
     {
-        float value = controls[idx].Process();
-
-        // Toggles only have two values.
-        if (idx >= TOGGLE_1 && idx <= TOGGLE_4)
+        float value{};
+        if (idx == SELECTOR_1 || idx == SELECTOR_2)
         {
-            value = value > 0.f ? 1.f : 0.f;
+            // Selectors use two controls, one for the up position (1) and one
+            // for the down position (-1). When both are > 0.f, the switch is in
+            // the center.
+            float a = controls[idx + 1].Process();
+            float b = controls[idx + 2].Process();
+            if (a > kMinValueDelta && b > kMinValueDelta)
+            {
+                value = 0.f;
+            }
+            else if (a > kMinValueDelta)
+            {
+                value = -1.f;
+            }
+            else if (b > kMinValueDelta)
+            {
+                value = 1.f;
+            }
         }
-        // Buttons too, but inverted.
-        else if (idx >= BUTTON_1 && idx <= BUTTON_4)
+        else
         {
-            value = value > 0.f ? 0.f : 1.f;
+            value = controls[idx].Process();
+
+            // Toggles only have two values.
+            if (idx >= TOGGLE_1 && idx <= TOGGLE_4)
+            {
+                value = value > kMinValueDelta ? 1.f : 0.f;
+            }
+            // Buttons too, but inverted ('cause I soldered them to GND...).
+            // Selectors are inverted in the up position.
+            else if (idx >= BUTTON_1 && idx <= BUTTON_4)
+            {
+                value = value > kMinValueDelta ? 0.f : 1.f;
+            }
         }
 
         return value;

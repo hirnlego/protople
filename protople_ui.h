@@ -9,35 +9,116 @@ namespace protople
     using namespace daisy;
     using namespace daisysp;
 
-    float values[CONTROL_LAST]{};
+     float values[CONTROL_LAST]{};
 
     bool startUp{true};
     bool first{true};
+    bool recording{};
+    bool selfRecording{};
 
+    /*
+        - note
+        - pan
+        - R/F
+        - D/R
+        - fx dry/wet
+
+        GRANULATOR:
+        - input gain
+        - volume
+
+        - speed
+        - feedback
+        - size
+        - grain size
+
+        OSCBANK:
+        - volume
+
+        - ratio 1
+        - ratio 2
+        - ratio 3
+        - ratio 4
+
+        RESONATOR:
+        - decay
+        - ratio
+        - (note)
+
+        FILTER:
+        - frequency
+        - resonance
+
+        DELAY:
+        - feedback
+        - time
+
+        - ratio 1
+        - ratio 2
+        - ratio 3
+        - ratio 4
+
+        REVERB:
+        - decay
+        - filter
+
+        Macros:
+
+        1) Resonator decay - Filter resonance
+        2) Resonator ratio - Filter frequency
+        3) Delay feedback - Reverb decay
+        4) Delay time - Reverb filter
+
+        Toggles:
+
+        1) Record
+        2) Internal/external
+        3) ?
+        4) ?
+
+        Buttons:
+
+        1) Randomize all
+        2) Randomize osc
+        3) Randomize granulator
+        4) Randomize fx
+
+    */
     inline void ProcessParameter(short idx, float value)
     {
         switch (idx)
         {
         case TRIM_1:
-            osc.SetFreq(fmap(value, 20.f, 220.f));
-            //osc.SetAmp(value);
             break;
         case TRIM_2:
             break;
         case TRIM_3:
-            //osc.SetAmp(value);
             break;
         case TRIM_4:
             break;
+        case TRIM_5:
+            break;
+        case TRIM_6:
+            break;
+        case TRIM_7:
+            break;
+        case TRIM_8:
+            break;
         case KNOB_1:
-            //osc.SetFreq(fmap(value, 20.f, 220.f));
             break;
         case KNOB_2:
             break;
         case KNOB_3:
-            //osc.SetFreq(fmap(value, 20.f, 220.f));
             break;
         case KNOB_4:
+            break;
+        case KNOB_5:
+            break;
+        case KNOB_6:
+            break;
+        case KNOB_7:
+            break;
+        case KNOB_8:
             break;
         case KNOB_9:
             break;
@@ -47,11 +128,33 @@ namespace protople
             break;
         case KNOB_12:
             break;
+        case KNOB_13:
+            break;
+        case KNOB_14:
+            break;
+        case KNOB_15:
+            break;
+        case KNOB_16:
+            break;
         case TOGGLE_1:
-            //osc.SetAmp(value);
+            break;
+        case TOGGLE_2:
+            break;
+        case TOGGLE_3:
+            break;
+        case TOGGLE_4:
+            break;
+        case SELECTOR_1:
+            break;
+        case SELECTOR_2:
             break;
         case BUTTON_1:
-            //osc.SetAmp(value);
+            break;
+        case BUTTON_2:
+            break;
+        case BUTTON_3:
+            break;
+        case BUTTON_4:
             break;
 
         default:
@@ -63,8 +166,15 @@ namespace protople
     {
         switch (idx)
         {
-        case CV_IN1:
-            //osc.SetFreq(100 + value);
+        case CV_IN_1:
+            break;
+        case CV_IN_2:
+            break;
+        case CV_IN_3:
+            break;
+        case CV_IN_4:
+            break;
+        case CV_IN_5:
             break;
 
         default:
@@ -76,13 +186,37 @@ namespace protople
     {
         float value = GetControlValue(idx);
 
-        // Process the parameter only if it actually changed.
-        if (std::abs(values[idx] - value) > kMinValueDelta || !check)
+        // Handle range limits.
+        if (idx >= TRIM_1 && idx <= KNOB_16)
         {
-            ProcessParameter(idx, value);
+            if (value < kMinValueDelta)
+            {
+                value = 0.f;
+            }
+            else if (value > 1 - kMinValueDelta)
+            {
+                value = 1.f;
+            }
 
-            values[idx] = value;
+            // Process the parameter only if it actually changed.
+            if (std::abs(values[idx] - value) > kMinValueDelta || !check)
+            {
+                ProcessParameter(idx, value);
+
+                values[idx] = value;
+            }
         }
+        else
+        {
+            // Process the parameter only if it actually changed.
+            if (value != values[idx] || !check)
+            {
+                ProcessParameter(idx, value);
+
+                values[idx] = value;
+            }
+        }
+
     }
 
     inline void ProcessUi()
