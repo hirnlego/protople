@@ -31,7 +31,7 @@
 
 #define GATE1_PIN 26 // I/O
 #define GATE2_PIN 27 // I/O
-#define GATE3_PIN 29 // I/O
+#define GATE3_PIN 29 // Gate out (37)
 #define GATE4_PIN 30 // I/O Could be used as MIDI in, needs a stereo jack and more circuitry, though
 
 #define CV1_PIN 15
@@ -105,18 +105,18 @@ namespace protople
 
     enum CvIn
     {
-        CV_IN_1, // Simple pin 26 -> Daisy pin 15 (15)
-        CV_IN_2, // Simple pin 31 -> Daisy pin 16 (16)
-        CV_IN_3, // Simple pin 36 -> Daisy pin 17 (17)
-        CV_IN_4, // Simple pin 41 -> Daisy pin 18 (18)
-        CV_IN_5, // Simple pin 46 -> Daisy pin 19 (19)
+        CV_IN_1, // Simple pin 26 -> Daisy pin 15 (30)
+        CV_IN_2, // Simple pin 31 -> Daisy pin 16 (31)
+        CV_IN_3, // Simple pin 36 -> Daisy pin 17 (32)
+        CV_IN_4, // Simple pin 41 -> Daisy pin 18 (33)
+        CV_IN_5, // Simple pin 46 -> Daisy pin 19 (34)
         CV_IN_LAST,
     };
 
     enum CvOut
     {
-        CV_OUT_1, // Simple pin 56 -> Daisy pin 22 (30)
-        CV_OUT_2, // Simple pin 61 -> Daisy pin 23 (31)
+        CV_OUT_1, // Simple pin 56 -> Daisy pin 22 (38)
+        CV_OUT_2, // Simple pin 61 -> Daisy pin 23 (37)
         CV_OUT_LAST,
     };
 
@@ -359,5 +359,15 @@ namespace protople
         }
 
         return value;
+    }
+
+    void GateOut(uint8_t state)
+    {
+        dsy_gpio_write(&gateOut, state);
+    }
+
+    void CvOut(DacHandle::Channel channel, float value)
+    {
+        seed.dac.WriteValue(channel, static_cast<uint16_t>(fmap(value, 0, 4095)));
     }
 }
