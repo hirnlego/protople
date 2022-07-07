@@ -9,12 +9,10 @@ namespace protople
     using namespace daisy;
     using namespace daisysp;
 
-     float values[CONTROL_LAST]{};
+    float values[CONTROL_LAST]{};
 
     bool startUp{true};
     bool first{true};
-    bool recording{};
-    bool selfRecording{};
 
     /*
         - note
@@ -161,13 +159,17 @@ namespace protople
             break;
         }
     }
-
-    inline void ProcessCv(short idx, float value)
+float min{};
+float max{};
+    void ProcessCv(short idx, float value)
     {
         switch (idx)
         {
         case CV_IN_1:
+        {
+            osc.SetAmp(value * 2 - 1); // Handles unipolar value
             break;
+        }
         case CV_IN_2:
             break;
         case CV_IN_3:
@@ -216,7 +218,13 @@ namespace protople
                 values[idx] = value;
             }
         }
+    }
 
+    inline void ProcessCvIn(int idx)
+    {
+        float value = GetCvValue(idx);
+
+        ProcessCv(idx, value);
     }
 
     inline void ProcessUi()
@@ -224,6 +232,10 @@ namespace protople
         for (short i = 0; i < CONTROL_LAST; i++)
         {
             ProcessControl(i);
+        }
+        for (short i = 0; i < CV_IN_LAST; i++)
+        {
+            ProcessCvIn(i);
         }
     }
 

@@ -361,6 +361,11 @@ namespace protople
         return value;
     }
 
+    float GetCvValue(short idx)
+    {
+        return cvIns[idx].Process();
+    }
+
     void GateOut(uint8_t state)
     {
         dsy_gpio_write(&gateOut, state);

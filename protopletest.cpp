@@ -9,7 +9,7 @@ using namespace daisysp;
 
 void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, size_t size)
 {
-    ProcessControls();
+    //ProcessControls();
     ProcessUi();
 
     for (size_t i = 0; i < size; i++)
@@ -32,6 +32,8 @@ int main(void)
     InitHw();
 
     osc.Init(GetAudioSampleRate());
+    osc.SetFreq(220);
+    osc.SetWaveform(Oscillator::WAVE_SIN);
 
     InitUi();
 
