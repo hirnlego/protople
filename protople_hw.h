@@ -122,9 +122,9 @@ namespace protople
 
     enum Gate
     {
-        GATE_IN_1, // Simple pin 66 -> Daisy pin 26 (34)
-        GATE_IN_2, // Simple pin 71 -> Daisy pin 27 (35)
-        GATE_OUT_, // Simple pin 76 -> Daisy pin 29 (37)
+        GATE_IN_1, // Simple pin 66 -> Daisy pin 26 (41)
+        GATE_IN_2, // Simple pin 71 -> Daisy pin 27 (42)
+        GATE_OUT_, // Simple pin 76 -> Daisy pin 29 (44)
         GATE_LAST,
     };
 
@@ -351,7 +351,6 @@ namespace protople
                 value = value > kMinValueDelta ? 1.f : 0.f;
             }
             // Buttons too, but inverted ('cause I soldered them to GND...).
-            // Selectors are inverted in the up position.
             else if (idx >= BUTTON_1 && idx <= BUTTON_4)
             {
                 value = value > kMinValueDelta ? 0.f : 1.f;
