@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Utility/dsp.h"
-#include "util/CpuLoadMeter.h"
 #include "daisy_seed.h"
+#include <stdint.h>
 #include <time.h>
 
 #define N_MUXES 5
@@ -49,11 +49,9 @@ namespace protople
     using namespace daisysp;
 
     // The minimum difference in parameter value to be registered.
-    constexpr float kMinValueDelta{0.003f};
+    constexpr float kMinValueDelta{0.005f};
 
     DaisySeed seed;
-
-    CpuLoadMeter cpuMeter;
 
     enum Control
     {
@@ -295,19 +293,14 @@ namespace protople
         return seed.AudioSampleRate();
     }
 
-    void InitCpuMeter(float sampleRate, int blockSize)
+    float GetAudioCallbackRate()
     {
-        cpuMeter.Init(sampleRate, blockSize);
+        return seed.AudioCallbackRate();
     }
 
-    void StartCpuMeter()
+    int32_t GetAudioBlockSize()
     {
-        cpuMeter.OnBlockStart();
-    }
-
-    void StopCpuMeter()
-    {
-        cpuMeter.OnBlockEnd();
+        return seed.AudioBlockSize();
     }
 
     inline void ProcessControls()
