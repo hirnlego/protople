@@ -14,74 +14,6 @@ namespace protople
     bool startUp{true};
     bool first{true};
 
-    /*
-        - note
-        - pan
-        - R/F
-        - D/R
-        - fx dry/wet
-
-        GRANULATOR:
-        - input gain
-        - volume
-
-        - speed
-        - feedback
-        - size
-        - grain size
-
-        OSCBANK:
-        - volume
-
-        - ratio 1
-        - ratio 2
-        - ratio 3
-        - ratio 4
-
-        RESONATOR:
-        - decay
-        - ratio
-        - (note)
-
-        FILTER:
-        - frequency
-        - resonance
-
-        DELAY:
-        - feedback
-        - time
-
-        - ratio 1
-        - ratio 2
-        - ratio 3
-        - ratio 4
-
-        REVERB:
-        - decay
-        - filter
-
-        Macros:
-
-        1) Resonator decay - Filter resonance
-        2) Resonator ratio - Filter frequency
-        3) Delay feedback - Reverb decay
-        4) Delay time - Reverb filter
-
-        Toggles:
-
-        1) Record
-        2) Internal/external
-        3) ?
-        4) ?
-
-        Buttons:
-
-        1) Randomize all
-        2) Randomize osc
-        3) Randomize granulator
-        4) Randomize fx
-
-    */
     inline void ProcessParameter(short idx, float value)
     {
         switch (idx)
@@ -103,8 +35,12 @@ namespace protople
         case TRIM_8:
             break;
         case KNOB_1:
+            osc.SetAmp(value);
+            //noise.SetChaos(Map(value, 0.f, 1.f, 0.1f, 0.3f));
             break;
         case KNOB_2:
+            osc.SetFreq(M2F(Map(value, 0.f, 1.f, kMinNote, kMaxNote)));
+            noise.SetFreq(M2F(Map(value, 0.f, 1.f, kMinNote, kMaxNote)));
             break;
         case KNOB_3:
             break;
@@ -119,10 +55,14 @@ namespace protople
         case KNOB_8:
             break;
         case KNOB_9:
+            phasor.SetFreq(Map(value, 0.f, 1.f, 20.f, 200.f));
+            swell.SetSmoothA(Map(value, 0.f, 1.f, 0.f, 10.f));
             break;
         case KNOB_10:
+            swell.SetSmoothB(Map(value, 0.f, 1.f, 0.f, 10.f));
             break;
         case KNOB_11:
+            swell.SetInertia(Map(value, 0.f, 1.f, 0.f, 0.001f));
             break;
         case KNOB_12:
             break;
@@ -159,17 +99,13 @@ namespace protople
             break;
         }
     }
-float min{};
-float max{};
+
     void ProcessCv(short idx, float value)
     {
         switch (idx)
         {
         case CV_IN_1:
-        {
-            osc.SetAmp(value * 2 - 1); // Handles unipolar value
             break;
-        }
         case CV_IN_2:
             break;
         case CV_IN_3:

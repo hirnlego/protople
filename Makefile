@@ -7,7 +7,7 @@ OPT = -O0
 
 # Sources
 CPP_SOURCES = protopletest.cpp
-C_INCLUDES = -IDaisySP/Source -IlibDaisy/src
+C_INCLUDES = -IDaisySP/Source -IlibDaisy/src -Ihlstk
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -g -gdwarf-2

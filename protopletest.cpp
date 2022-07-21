@@ -1,11 +1,9 @@
 #include "protople_hw.h"
 #include "protople_ui.h"
-#include "protopletest.h"
-#include <cstring>
+#include "commons.h"
 
 using namespace protople;
 using namespace daisysp;
-
 
 void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, size_t size)
 {
@@ -20,7 +18,7 @@ void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, s
         float leftOut{};
         float rightOut{};
 
-        leftOut = rightOut = osc.Process();
+        leftOut = rightOut = noise.Process();
 
         OUT_L[i] = leftOut;
         OUT_R[i] = rightOut;
@@ -31,9 +29,17 @@ int main(void)
 {
     InitHw();
 
-    osc.Init(GetAudioSampleRate());
-    osc.SetFreq(220);
-    osc.SetWaveform(Oscillator::WAVE_SIN);
+    SineTable(oscBuffer, 2048);
+
+    osc.Init(GetAudioSampleRate(), oscBuffer, 2048);
+
+    delay.Init(GetAudioSampleRate(), delayBuffer, 48000);
+
+    phasor.Init(GetAudioSampleRate());
+
+    noise.Init(GetAudioSampleRate(), 0.2f);
+
+    swell.Init(GetAudioSampleRate());
 
     InitUi();
 
