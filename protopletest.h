@@ -1,25 +1,15 @@
 #pragma once
 
-#include "tableosc.h"
-#include "clkdelay.h"
-#include "controltools.h"
+#include "effects/resonator2.h"
 #include "noisetools.h"
+#include "dev/sdram.h"
 
 namespace protople
 {
     using namespace hlstk;
+    using namespace daisy;
 
-    TableOsc osc;
-    float oscBuffer[2048];
-
-    ClkDelay delay;
-    float delayBuffer[48000];
-
-    Phasor phasor;
-    float warp;
-
-    Velvet noise;
-
-    Swell swell;
-    float rate;
+    float DSY_SDRAM_BSS resoBuffer[2][3][48000];
+    Resonator reso;
+    Noise noise;
 }

@@ -1,14 +1,9 @@
 #pragma once
 
 #include "protopletest.h"
-#include "Utility/dsp.h"
-#include <string>
 
 namespace protople
 {
-    using namespace daisy;
-    using namespace daisysp;
-
     float values[CONTROL_LAST]{};
 
     bool startUp{true};
@@ -35,14 +30,13 @@ namespace protople
         case TRIM_8:
             break;
         case KNOB_1:
-            osc.SetAmp(value);
-            //noise.SetChaos(Map(value, 0.f, 1.f, 0.1f, 0.3f));
+            reso.SetDecay(value);
             break;
         case KNOB_2:
-            osc.SetFreq(M2F(Map(value, 0.f, 1.f, kMinNote, kMaxNote)));
-            noise.SetFreq(M2F(Map(value, 0.f, 1.f, kMinNote, kMaxNote)));
+            reso.SetFrequency(Map(value, 0.f, 1.f, 20.f, 4000.f));
             break;
         case KNOB_3:
+            reso.SetRatio(std::floor(Map(value, 0.f, 1.f, 1, 7)));
             break;
         case KNOB_4:
             break;
@@ -55,14 +49,10 @@ namespace protople
         case KNOB_8:
             break;
         case KNOB_9:
-            phasor.SetFreq(Map(value, 0.f, 1.f, 20.f, 200.f));
-            swell.SetSmoothA(Map(value, 0.f, 1.f, 0.f, 10.f));
             break;
         case KNOB_10:
-            swell.SetSmoothB(Map(value, 0.f, 1.f, 0.f, 10.f));
             break;
         case KNOB_11:
-            swell.SetInertia(Map(value, 0.f, 1.f, 0.f, 0.001f));
             break;
         case KNOB_12:
             break;

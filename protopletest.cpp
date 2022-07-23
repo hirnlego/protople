@@ -19,6 +19,7 @@ void AudioCallback(AudioHandle::InputBuffer in, AudioHandle::OutputBuffer out, s
         float rightOut{};
 
         leftOut = rightOut = noise.Process();
+        reso.Process(leftOut, rightOut);
 
         OUT_L[i] = leftOut;
         OUT_R[i] = rightOut;
@@ -29,17 +30,9 @@ int main(void)
 {
     InitHw();
 
-    SineTable(oscBuffer, 2048);
 
-    osc.Init(GetAudioSampleRate(), oscBuffer, 2048);
-
-    delay.Init(GetAudioSampleRate(), delayBuffer, 48000);
-
-    phasor.Init(GetAudioSampleRate());
-
-    noise.Init(GetAudioSampleRate(), 0.2f);
-
-    swell.Init(GetAudioSampleRate());
+    reso.Init(GetAudioSampleRate(), (float *)resoBuffer, 48000);
+    noise.Init();
 
     InitUi();
 
